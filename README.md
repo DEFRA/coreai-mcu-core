@@ -1,0 +1,1 @@
+# coreai-mcu-core
