@@ -1,0 +1,20 @@
+[submodule "coreai-mcu-frontend"]
+	path = coreai-mcu-frontend
+	url = https://github.com/DEFRA/coreai-mcu-frontend
+	branch = main
+[submodule "coreai-mcu-knowledge-pgv"]
+	path = coreai-mcu-knowledge-pgv
+	url = https://github.com/DEFRA/coreai-mcu-knowledge-pgv
+	branch = main
+[submodule "coreai-mcu-responses"]
+	path = coreai-mcu-responses
+	url = https://github.com/DEFRA/coreai-mcu-responses
+	branch = main
+[submodule "coreai-mcu-generation-oai"]
+	path = coreai-mcu-generation-oai
+	url = https://github.com/DEFRA/coreai-mcu-generation-oai
+	branch = main
+[submodule "coreai-mcu-documents"]
+	path = coreai-mcu-documents
+	url = https://github.com/DEFRA/coreai-mcu-documents
+	branch = main

@@ -1,0 +1,76 @@
+services:
+  coreai-mcu-frontend:
+    build:
+      context: ./coreai-mcu-frontend
+      target: production
+    image: coreai-mcu-frontend
+    container_name: coreai-mcu-frontend
+    ports:
+      - "3000:3000"
+      - "9229:9229"
+
+  coreai-mcu-documents:
+    build:
+      context: ./coreai-mcu-documents
+      target: production
+    image: coreai-mcu-documents
+    container_name: coreai-mcu-documents
+    ports:
+      - "3001:3000"
+      - "9230:9229"
+
+  coreai-mcu-generation-oai:
+    build:
+      context: ./coreai-mcu-generation-oai
+      target: production
+    image: coreai-mcu-generation-oai
+    container_name: coreai-mcu-generation-oai
+    ports:
+      - "3002:3000"
+      - "9231:9229"
+
+  coreai-mcu-knowledge-pgv:
+    build:
+      context: ./coreai-mcu-knowledge-pgv
+      target: production
+    image: coreai-mcu-knowledge-pgv
+    container_name: coreai-mcu-knowledge-pgv
+    ports:
+      - "3003:3000"
+      - "9232:9229"
+
+  coreai-mcu-responses:
+    build:
+      context: ./coreai-mcu-responses
+      target: production
+    image: coreai-mcu-responses
+    container_name: coreai-mcu-responses
+    ports:
+      - "3004:3000"
+      - "9233:9229"
+
+  coreai-mcu-postgres:
+    build:
+      context: .
+      dockerfile: ./coreai-mcu-knowledge-pgv/postgres/Dockerfile
+    image: coreai-mcu-knowledge-pgv-postgres
+    environment:
+      POSTGRES_DB: coreai-mcu-knowledge
+      POSTGRES_PASSWORD: ppp
+      POSTGRES_USERNAME: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  coreai-mcu-azurite:
+    image: mcr.microsoft.com/azure-storage/azurite
+    ports:
+      - "10000:10000"
+      - "10002:10002"
+    volumes:
+      - azurite_data:/data
+
+volumes:
+  azurite_data:
+  postgres_data:

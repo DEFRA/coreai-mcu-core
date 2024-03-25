@@ -1,0 +1,51 @@
+version: '3.8'
+
+x-common-migration: &common-migration
+  POSTGRES_HOST: ${POSTGRES_HOST:-coreai-mcu-postgres}
+  SCHEMA_ROLE: ${POSTGRES_SCHEMA_ROLE:-postgres}
+  SCHEMA_USERNAME: ${POSTGRES_SCHEMA_USERNAME:-postgres}
+  SCHEMA_PASSWORD: ${POSTGRES_SCHEMA_PASSWORD:-ppp}
+  SCHEMA_NAME: ${POSTGRES_SCHEMA_NAME:-public}
+
+x-common-postgres: &common-postgres
+  POSTGRES_PORT: 5432
+  POSTGRES_DB: ${POSTGRES_DB:-coreai-mcu-knowledge}
+  POSTGRES_PASSWORD: ${POSTGRES_ADMIN_PASSWORD:-ppp}
+  POSTGRES_USERNAME: ${POSTGRES_ADMIN_USERNAME:-postgres}
+
+services:
+  database-up:
+    image: liquibase/liquibase:3.10.x
+    environment:
+      << : [*common-postgres, *common-migration]
+    entrypoint: >
+      sh -c "/scripts/migration/database-up $${SCHEMA_PASSWORD}"
+    depends_on:
+      - coreai-mcu-postgres
+    volumes:
+      - ./coreai-mcu-knowledge-pgv/changelog:/liquibase/changelog
+      - ./scripts:/scripts
+
+  database-down:
+    image: liquibase/liquibase:3.10.x
+    environment:
+      << : [*common-postgres, *common-migration]
+    entrypoint: >
+      sh -c "/scripts/migration/database-down"
+    depends_on:
+      - coreai-mcu-postgres
+    volumes:
+      - ./coreai-mcu-knowledge-pgv/changelog:/liquibase/changelog
+      - ./scripts:/scripts
+
+  coreai-mcu-postgres:
+    build:
+      context: .
+      dockerfile: ./coreai-mcu-knowledge-pgv/postgres/Dockerfile
+    image: coreai-mcu-postgres
+    environment: *common-postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data: {}

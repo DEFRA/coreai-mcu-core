@@ -1,0 +1,20 @@
+{
+	"folders": [
+		{
+			"path": "coreai-mcu-frontend"
+		},
+		{
+			"path": "coreai-mcu-knowledge-pgv"
+		},
+		{
+			"path": "coreai-mcu-documents"
+		},
+		{
+			"path": "coreai-mcu-generation-oai"
+		},
+		{
+			"path": "coreai-mcu-responses"
+		}
+	],
+	"settings": {}
+}
