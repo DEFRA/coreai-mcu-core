@@ -8,14 +8,11 @@
 ## Setting up the project
 ```bash
 git clone https://github.com/DEFRA/coreai-mcu-core --recurse-submodules
-git submodule update --remote
-git pull --recurse-submodules
 ```
 
 ## Updating submodules
 ```bash
 git submodule update --remote
-git pull --recurse-submodules
 ```
 
 ## Setting environment variables
