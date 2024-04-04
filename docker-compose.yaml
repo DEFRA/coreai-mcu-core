@@ -64,6 +64,7 @@ services:
       AZURE_OPENAI_API_VERSION: ${AZURE_OPENAI_API_VERSION:-test}
       EMBEDDING_MODEL_NAME: ${EMBEDDING_MODEL_NAME:-test}
       GENERATION_MODEL_NAME: ${GENERATION_MODEL_NAME:-test}
+      DOCUMENTS_API_BASE_URL: ${DOCUMENTS_API_BASE_URL:-coreai-mcu-documents}
 
   coreai-mcu-knowledge-pgv:
     build:
