@@ -5,6 +5,15 @@
 * Docker Compose
 * WSL2 (Windows only)
 
+## Services
+| Service |
+|---------|
+[coreai-mcu-documents](https://github.com/DEFRA/coreai-mcu-documents)
+[coreai-mcu-frontend](https://github.com/DEFRA/coreai-mcu-frontend)
+[coreai-mcu-generation-oai](https://github.com/DEFRA/coreai-mcu-generation-oai)
+[coreai-mcu-knowledge-pgv](https://github.com/DEFRA/coreai-mcu-knowledge-pgv)
+[coreai-mcu-responses](https://github.com/DEFRA/coreai-mcu-responses)
+
 ## Setting up the project
 ```bash
 git clone https://github.com/DEFRA/coreai-mcu-core --recurse-submodules
