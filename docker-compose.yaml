@@ -18,6 +18,7 @@ services:
       EVENTS_TOPIC_ADDRESS: ${EVENT_TOPIC:-coreai-mcu-events}${MESSAGE_QUEUE_SUFFIX}
       EVENTS_SUBSCRIPTION: ${EVENT_SUBSCRIPTION:-coreai-mcu-frontend}
       DOCUMENTS_API_BASE_URL: ${DOCUMENTS_API_BASE_URL:-coreai-mcu-documents}
+      KNOWLEDGE_API_BASE_URL: ${KNOWLEDGE_API_BASE_URL:-coreai-mcu-knowledge}
       RESPONSES_API_BASE_URL: ${RESPONSES_API_BASE_URL:-coreai-mcu-responses}
 
   coreai-mcu-documents:
