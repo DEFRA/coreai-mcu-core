@@ -20,6 +20,7 @@ services:
       DOCUMENTS_API_BASE_URL: ${DOCUMENTS_API_BASE_URL:-coreai-mcu-documents}
       KNOWLEDGE_API_BASE_URL: ${KNOWLEDGE_API_BASE_URL:-coreai-mcu-knowledge}
       RESPONSES_API_BASE_URL: ${RESPONSES_API_BASE_URL:-coreai-mcu-responses}
+      KNOWLEDGE_API_BASE_URL: ${KNOWLEDGE_API_BASE_URL:-coreai-mcu-knowledge-pgv}
 
   coreai-mcu-documents:
     build:
