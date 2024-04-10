@@ -18,3 +18,7 @@
 	path = coreai-mcu-documents
 	url = https://github.com/DEFRA/coreai-mcu-documents
 	branch = main
+[submodule "coreai-mcu-event"]
+	path = coreai-mcu-event
+	url = https://github.com/DEFRA/coreai-mcu-event
+	branch = main
