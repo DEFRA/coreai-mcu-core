@@ -124,6 +124,36 @@ services:
       AZURE_STORAGE_CONNECTION_STRING: ${AZURE_STORAGE_CONNECTION_STRING}
       AZURE_STORAGE_ACCOUNT: ${AZURE_STORAGE_ACCOUNT}
 
+  coreai-mcu-event:
+    build:
+      context: ./coreai-mcu-event
+      target: development
+    image: coreai-mcu-event
+    container_name: coreai-mcu-event
+    ports:
+      - "3005:3000"
+      - "9234:9229"
+    environment:
+      MESSAGE_QUEUE_HOST: ${MESSAGE_QUEUE_HOST}
+      MESSAGE_QUEUE_USER: ${MESSAGE_QUEUE_USER}
+      MESSAGE_QUEUE_PASSWORD: ${MESSAGE_QUEUE_PASSWORD}
+      EVENTS_TOPIC_ADDRESS: ${EVENT_TOPIC:-coreai-mcu-events}${MESSAGE_QUEUE_SUFFIX}
+      EVENTS_SUBSCRIPTION: ${EVENT_SUBSCRIPTION:-coreai-mcu-event}
+
+  coreai-mcu-prompts:
+    build:
+      context: ./coreai-mcu-prompts
+      target: development
+    image: coreai-mcu-prompts
+    container_name: coreai-mcu-prompts
+    ports:
+      - "3006:3000"
+      - "9235:9229"
+    environment:
+      AZURE_STORAGE_USE_CONNECTION_STRING: ${AZURE_STORAGE_USE_CONNECTION_STRING:-true}
+      AZURE_STORAGE_CONNECTION_STRING: ${AZURE_STORAGE_CONNECTION_STRING}
+      AZURE_STORAGE_ACCOUNT: ${AZURE_STORAGE_ACCOUNT}
+
   coreai-mcu-postgres:
     build:
       context: .
@@ -144,7 +174,7 @@ services:
       - "10000:10000"
       - "10002:10002"
     volumes:
-      - azurite_data:/data
+      - azurite_data:/data   
 
 volumes:
   azurite_data:
