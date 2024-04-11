@@ -22,3 +22,7 @@
 	path = coreai-mcu-event
 	url = https://github.com/DEFRA/coreai-mcu-event
 	branch = main
+[submodule "coreai-mcu-prompts"]
+	path = coreai-mcu-prompts
+	url = https://github.com/DEFRA/coreai-mcu-prompts
+	branch = main
