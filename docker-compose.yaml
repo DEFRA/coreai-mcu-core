@@ -156,6 +156,20 @@ services:
       AZURE_STORAGE_CONNECTION_STRING: ${AZURE_STORAGE_CONNECTION_STRING}
       AZURE_STORAGE_ACCOUNT: ${AZURE_STORAGE_ACCOUNT}
 
+  coreai-mcu-persona:
+    build:
+      context: ./coreai-mcu-persona
+      target: development
+    image: coreai-mcu-persona
+    container_name: coreai-mcu-persona
+    ports:
+      - "3007:3000"
+      - "9235:9229"
+    environment:
+      AZURE_STORAGE_USE_CONNECTION_STRING: ${AZURE_STORAGE_USE_CONNECTION_STRING:-true}
+      AZURE_STORAGE_CONNECTION_STRING: ${AZURE_STORAGE_CONNECTION_STRING}
+      AZURE_STORAGE_ACCOUNT: ${AZURE_STORAGE_ACCOUNT}
+
   coreai-mcu-postgres:
     build:
       context: .
