@@ -79,6 +79,7 @@ services:
       DOCUMENTS_API_BASE_URL: ${DOCUMENTS_API_BASE_URL:-coreai-mcu-documents}
       RESPONSES_API_BASE_URL: ${RESPONSES_API_BASE_URL:-coreai-mcu-responses}
       PROMPTS_API_BASE_URL: ${PROMPTS_API_BASE_URL:-coreai-mcu-prompts}
+      LOCAL: ${LOCAL:-true}
 
   coreai-mcu-knowledge-pgv:
     build:

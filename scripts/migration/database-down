@@ -1,8 +1,17 @@
 #!/bin/bash
 echo "db update on $POSTGRES_HOST $SCHEMA_NAME as $SCHEMA_USERNAME"
+
+if [ "$LOCAL" = "true" ]; then
+  export CHANGELOG=db.changelog.local.xml
+else
+  export CHANGELOG=db.changelog.xml
+fi
+
+echo "Using changelog $CHANGELOG"
+
 /scripts/postgres-wait && /liquibase/liquibase \
 --driver=org.postgresql.Driver \
---changeLogFile=/changelog/db.changelog.xml \
+--changeLogFile=/changelog/$CHANGELOG \
 --url=jdbc:postgresql://$POSTGRES_HOST:$POSTGRES_PORT/$POSTGRES_DB \
 --username="$SCHEMA_USERNAME" --password="$SCHEMA_PASSWORD" --defaultSchemaName="$SCHEMA_NAME" \
 rollback v0.0.0
