@@ -26,6 +26,7 @@ services:
       DOCUMENTS_API_BASE_URL: ${DOCUMENTS_API_BASE_URL:-coreai-mcu-documents}
       KNOWLEDGE_API_BASE_URL: ${KNOWLEDGE_API_BASE_URL:-coreai-mcu-knowledge}
       RESPONSES_API_BASE_URL: ${RESPONSES_API_BASE_URL:-coreai-mcu-responses}
+      PROMPTS_API_BASE_URL: ${PROMPTS_API_BASE_URL:-coreai-mcu-prompts}
       NOTIFY_API_KEY: ${NOTIFY_API_KEY}
       NOTIFY_TEMPLATE_ID_CORRESPONDENCE: ${NOTIFY_TEMPLATE_ID_CORRESPONDENCE}
       CARBON_COPY_EMAIL_ADDRESS: ${CARBON_COPY_EMAIL_ADDRESS}
@@ -77,6 +78,7 @@ services:
       GENERATION_MODEL_NAME: ${GENERATION_MODEL_NAME:-test}
       DOCUMENTS_API_BASE_URL: ${DOCUMENTS_API_BASE_URL:-coreai-mcu-documents}
       RESPONSES_API_BASE_URL: ${RESPONSES_API_BASE_URL:-coreai-mcu-responses}
+      PROMPTS_API_BASE_URL: ${PROMPTS_API_BASE_URL:-coreai-mcu-prompts}
 
   coreai-mcu-knowledge-pgv:
     build:
@@ -164,7 +166,7 @@ services:
     container_name: coreai-mcu-persona
     ports:
       - "3007:3000"
-      - "9235:9229"
+      - "9236:9229"
     environment:
       AZURE_STORAGE_USE_CONNECTION_STRING: ${AZURE_STORAGE_USE_CONNECTION_STRING:-true}
       AZURE_STORAGE_CONNECTION_STRING: ${AZURE_STORAGE_CONNECTION_STRING}
