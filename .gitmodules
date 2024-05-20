@@ -26,7 +26,7 @@
 	path = coreai-mcu-prompts
 	url = https://github.com/DEFRA/coreai-mcu-prompts
 	branch = main
-[submodule "coreai-mcu-persona"]
-	path = coreai-mcu-persona
-	url = https://github.com/DEFRA/coreai-mcu-persona
+[submodule "coreai-mcu-personas"]
+	path = coreai-mcu-personas
+	url = https://github.com/DEFRA/coreai-mcu-personas
 	branch = main
