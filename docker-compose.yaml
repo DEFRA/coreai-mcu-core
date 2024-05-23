@@ -26,7 +26,7 @@ services:
       KNOWLEDGE_API_BASE_URL: ${KNOWLEDGE_API_BASE_URL:-coreai-mcu-knowledge}
       RESPONSES_API_BASE_URL: ${RESPONSES_API_BASE_URL:-coreai-mcu-responses}
       PROMPTS_API_BASE_URL: ${PROMPTS_API_BASE_URL:-coreai-mcu-prompts}
-      PERSONAS_API_BASE_URL: ${PERSONAS_API_BASE_URL:-coreai-mcu-persona}
+      PERSONAS_API_BASE_URL: ${PERSONAS_API_BASE_URL:-coreai-mcu-personas}
       NOTIFY_API_KEY: ${NOTIFY_API_KEY}
       NOTIFY_TEMPLATE_ID_CORRESPONDENCE: ${NOTIFY_TEMPLATE_ID_CORRESPONDENCE}
       CARBON_COPY_EMAIL_ADDRESS: ${CARBON_COPY_EMAIL_ADDRESS}
@@ -44,6 +44,7 @@ services:
       AZURE_STORAGE_USE_CONNECTION_STRING: ${AZURE_STORAGE_USE_CONNECTION_STRING:-true}
       AZURE_STORAGE_CONNECTION_STRING: ${AZURE_STORAGE_CONNECTION_STRING}
       AZURE_STORAGE_ACCOUNT: ${AZURE_STORAGE_ACCOUNT}
+      INIT_STORAGE: "true"
 
   coreai-mcu-generation-oai:
     build:
@@ -85,6 +86,7 @@ services:
       DOCUMENTS_API_BASE_URL: ${DOCUMENTS_API_BASE_URL:-coreai-mcu-documents}
       RESPONSES_API_BASE_URL: ${RESPONSES_API_BASE_URL:-coreai-mcu-responses}
       PROMPTS_API_BASE_URL: ${PROMPTS_API_BASE_URL:-coreai-mcu-prompts}
+      PERSONAS_API_BASE_URL: ${PERSONAS_API_BASE_URL:-coreai-mcu-personas}
       OLLAMA_ENABLED: ${OLLAMA_ENABLED:-true}
       OLLAMA_BASE_URL: ${OLLAMA_BASE_URL:-http://host.docker.internal:11434}
 
@@ -167,13 +169,14 @@ services:
       AZURE_STORAGE_USE_CONNECTION_STRING: ${AZURE_STORAGE_USE_CONNECTION_STRING:-true}
       AZURE_STORAGE_CONNECTION_STRING: ${AZURE_STORAGE_CONNECTION_STRING}
       AZURE_STORAGE_ACCOUNT: ${AZURE_STORAGE_ACCOUNT}
+      INIT_STORAGE: "true"
 
-  coreai-mcu-persona:
+  coreai-mcu-personas:
     build:
-      context: ./coreai-mcu-persona
+      context: ./coreai-mcu-personas
       target: development
-    image: coreai-mcu-persona
-    container_name: coreai-mcu-persona
+    image: coreai-mcu-personas
+    container_name: coreai-mcu-personas
     ports:
       - "3007:3000"
       - "9236:9229"
@@ -181,6 +184,7 @@ services:
       AZURE_STORAGE_USE_CONNECTION_STRING: ${AZURE_STORAGE_USE_CONNECTION_STRING:-true}
       AZURE_STORAGE_CONNECTION_STRING: ${AZURE_STORAGE_CONNECTION_STRING}
       AZURE_STORAGE_ACCOUNT: ${AZURE_STORAGE_ACCOUNT}
+      INIT_STORAGE: "true"
 
   coreai-mcu-postgres:
     build:
