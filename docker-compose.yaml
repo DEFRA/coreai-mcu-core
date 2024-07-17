@@ -205,6 +205,7 @@ services:
     ports:
       - "10000:10000"
       - "10002:10002"
+    command: azurite --blobHost 0.0.0.0 --tableHost 0.0.0.0 --skipApiVersionCheck
     volumes:
       - azurite_data:/data
 
