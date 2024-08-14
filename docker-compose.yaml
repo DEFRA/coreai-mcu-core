@@ -8,6 +8,11 @@ services:
     ports:
       - "3000:3000"
       - "9229:9229"
+    volumes:
+      - ./coreai-mcu-frontend/app:/home/node/app
+      - ./coreai-mcu-frontend/test:/home/node/test
+      - ./coreai-mcu-frontend/scripts:/home/node/scripts
+      - ./coreai-mcu-frontend/package.json:/home/node/package.json
     environment:
       MESSAGE_QUEUE_HOST: ${MESSAGE_QUEUE_HOST}
       MESSAGE_QUEUE_USER: ${MESSAGE_QUEUE_USER}
@@ -17,11 +22,11 @@ services:
       AZUREID_CLIENT_ID: ${AZUREID_CLIENT_ID}
       AZUREID_TENANT_ID: ${AZUREID_TENANT_ID}
       COOKIE_PASSWORD: who-likes-cookies-i-like-cookies-everybody-likes-cookies
-      GENERATION_REQUEST_TOPIC: ${GENERATION_REQUEST_TOPIC:-coreai-mcu-generate}${MESSAGE_QUEUE_SUFFIX}
-      TRIAGE_REQUEST_TOPIC: ${TRIAGE_REQUEST_TOPIC:-coreai-mcu-triage}${MESSAGE_QUEUE_SUFFIX}
-      KNOWLEDGE_INGESTION_TOPIC: ${KNOWLEDGE_INGESTION_TOPIC:-coreai-mcu-knowledge-ingest}${MESSAGE_QUEUE_SUFFIX}
-      EVENTS_TOPIC_ADDRESS: ${EVENT_TOPIC:-coreai-mcu-events}${MESSAGE_QUEUE_SUFFIX}
-      EVENTS_SUBSCRIPTION: ${EVENT_SUBSCRIPTION:-coreai-mcu-frontend}
+      GENERATION_REQUEST_TOPIC: ${GENERATION_REQUEST_TOPIC:-crai-mcu-generate}${MESSAGE_QUEUE_SUFFIX}
+      TRIAGE_REQUEST_TOPIC: ${TRIAGE_REQUEST_TOPIC:-crai-mcu-triage}${MESSAGE_QUEUE_SUFFIX}
+      KNOWLEDGE_INGESTION_TOPIC: ${KNOWLEDGE_INGESTION_TOPIC:-crai-mcu-knowledge-ingest}${MESSAGE_QUEUE_SUFFIX}
+      EVENTS_TOPIC_ADDRESS: ${EVENT_TOPIC:-crai-mcu-events}${MESSAGE_QUEUE_SUFFIX}
+      EVENTS_SUBSCRIPTION: ${EVENT_SUBSCRIPTION:-crai-mcu-frontend}
       DOCUMENTS_API_BASE_URL: ${DOCUMENTS_API_BASE_URL:-coreai-mcu-documents}
       KNOWLEDGE_API_BASE_URL: ${KNOWLEDGE_API_BASE_URL:-coreai-mcu-knowledge}
       RESPONSES_API_BASE_URL: ${RESPONSES_API_BASE_URL:-coreai-mcu-responses}
@@ -40,6 +45,11 @@ services:
     ports:
       - "3001:3000"
       - "9230:9229"
+    volumes:
+      - ./coreai-mcu-documents/app:/home/node/app
+      - ./coreai-mcu-documents/test:/home/node/test
+      - ./coreai-mcu-documents/scripts:/home/node/scripts
+      - ./coreai-mcu-documents/package.json:/home/node/package.json
     environment:
       AZURE_STORAGE_USE_CONNECTION_STRING: ${AZURE_STORAGE_USE_CONNECTION_STRING:-true}
       AZURE_STORAGE_CONNECTION_STRING: ${AZURE_STORAGE_CONNECTION_STRING}
@@ -55,6 +65,11 @@ services:
     ports:
       - "3002:3000"
       - "9231:9229"
+    volumes:
+      - ./coreai-mcu-generation-oai/app:/home/node/app
+      - ./coreai-mcu-generation-oai/test:/home/node/test
+      - ./coreai-mcu-generation-oai/scripts:/home/node/scripts
+      - ./coreai-mcu-generation-oai/package.json:/home/node/package.json
     environment:
       POSTGRES_DB: coreai-mcu-knowledge-pgv
       POSTGRES_HOST: ${POSTGRES_HOST:-host.docker.internal}
@@ -65,16 +80,16 @@ services:
       MESSAGE_QUEUE_HOST: ${MESSAGE_QUEUE_HOST}
       MESSAGE_QUEUE_USER: ${MESSAGE_QUEUE_USER}
       MESSAGE_QUEUE_PASSWORD: ${MESSAGE_QUEUE_PASSWORD}
-      GENERATION_REQUEST_OAI_SUBSCRIPTION: ${GENERATION_REQUEST_OAI_SUBSCRIPTION:-coreai-mcu-generation-oai}
+      GENERATION_REQUEST_OAI_SUBSCRIPTION: ${GENERATION_REQUEST_OAI_SUBSCRIPTION:-crai-mcu-generation-oai}
       AZURE_OPENAI_ENABLED: ${AZURE_OPENAI_ENABLED:-true}
       AWS_BEDROCK_ENABLED: ${AWS_BEDROCK_ENABLED:-true}
       AWS_BEDROCK_REGION: ${AWS_BEDROCK_REGION:-test}
       AWS_BEDROCK_ACCESS_KEY_ID: ${AWS_BEDROCK_ACCESS_KEY_ID:-test}
       AWS_BEDROCK_SECRET_ACCESS_KEY: ${AWS_BEDROCK_SECRET_ACCESS_KEY:-test}
       AWS_BEDROCK_MAX_TOKENS_TO_SAMPLE: ${AWS_BEDROCK_MAX_TOKENS_TO_SAMPLE:-test}
-      GENERATION_REQUEST_TOPIC: ${GENERATION_REQUEST_TOPIC:-coreai-mcu-generate}${MESSAGE_QUEUE_SUFFIX}
-      SUMMARY_REQUEST_TOPIC: ${SUMMARY_REQUEST_TOPIC:-coreai-mcu-triage}${MESSAGE_QUEUE_SUFFIX}
-      RESPONSE_PROCESSING_QUEUE_ADDRESS: ${RESPONSE_PROCESSING_QUEUE_ADDRESS:-coreai-mcu-response}${MESSAGE_QUEUE_SUFFIX}
+      GENERATION_REQUEST_TOPIC: ${GENERATION_REQUEST_TOPIC:-crai-mcu-generate}${MESSAGE_QUEUE_SUFFIX}
+      SUMMARY_REQUEST_TOPIC: ${SUMMARY_REQUEST_TOPIC:-crai-mcu-triage}${MESSAGE_QUEUE_SUFFIX}
+      RESPONSE_PROCESSING_QUEUE_ADDRESS: ${RESPONSE_PROCESSING_QUEUE_ADDRESS:-crai-mcu-response}${MESSAGE_QUEUE_SUFFIX}
       AZURE_STORAGE_USE_CONNECTION_STRING: ${AZURE_STORAGE_USE_CONNECTION_STRING}
       AZURE_STORAGE_CONNECTION_STRING: ${AZURE_STORAGE_CONNECTION_STRING}
       AZURE_STORAGE_ACCOUNT: ${AZURE_STORAGE_ACCOUNT}
@@ -99,6 +114,11 @@ services:
     ports:
       - "3003:3000"
       - "9232:9229"
+    volumes:
+      - ./coreai-mcu-knowledge-pgv/app:/home/node/app
+      - ./coreai-mcu-knowledge-pgv/test:/home/node/test
+      - ./coreai-mcu-knowledge-pgv/scripts:/home/node/scripts
+      - ./coreai-mcu-knowledge-pgv/package.json:/home/node/package.json
     environment:
       POSTGRES_DB: coreai-mcu-knowledge-pgv
       POSTGRES_HOST: ${POSTGRES_HOST:-coreai-mcu-postgres}
@@ -109,8 +129,8 @@ services:
       MESSAGE_QUEUE_HOST: ${MESSAGE_QUEUE_HOST}
       MESSAGE_QUEUE_USER: ${MESSAGE_QUEUE_USER}
       MESSAGE_QUEUE_PASSWORD: ${MESSAGE_QUEUE_PASSWORD}
-      KNOWLEDGE_INGESTION_PGV_SUBSCRIPTION: ${KNOWLEDGE_INGESTION_PGV_SUBSCRIPTION:-coreai-mcu-knowledge-pgv}
-      KNOWLEDGE_INGESTION_TOPIC: ${KNOWLEDGE_INGESTION_TOPIC:-coreai-mcu-knowledge-ingest}${MESSAGE_QUEUE_SUFFIX}
+      KNOWLEDGE_INGESTION_PGV_SUBSCRIPTION: ${KNOWLEDGE_INGESTION_PGV_SUBSCRIPTION:-crai-mcu-knowledge-pgv}
+      KNOWLEDGE_INGESTION_TOPIC: ${KNOWLEDGE_INGESTION_TOPIC:-crai-mcu-knowledge-ingest}${MESSAGE_QUEUE_SUFFIX}
       AZURE_STORAGE_USE_CONNECTION_STRING: ${AZURE_STORAGE_USE_CONNECTION_STRING}
       AZURE_STORAGE_CONNECTION_STRING: ${AZURE_STORAGE_CONNECTION_STRING}
       AZURE_STORAGE_ACCOUNT: ${AZURE_STORAGE_ACCOUNT}
@@ -129,12 +149,17 @@ services:
     ports:
       - "3004:3000"
       - "9233:9229"
+    volumes:
+      - ./coreai-mcu-responses/app:/home/node/app
+      - ./coreai-mcu-responses/test:/home/node/test
+      - ./coreai-mcu-responses/scripts:/home/node/scripts
+      - ./coreai-mcu-responses/package.json:/home/node/package.json
     environment:
       MESSAGE_QUEUE_HOST: ${MESSAGE_QUEUE_HOST}
       MESSAGE_QUEUE_USER: ${MESSAGE_QUEUE_USER}
       MESSAGE_QUEUE_PASSWORD: ${MESSAGE_QUEUE_PASSWORD}
-      RESPONSE_PROCESSING_QUEUE_ADDRESS: ${RESPONSE_PROCESSING_QUEUE_ADDRESS:-coreai-mcu-response}${MESSAGE_QUEUE_SUFFIX}
-      EVENTS_TOPIC_ADDRESS: ${EVENT_TOPIC:-coreai-mcu-events}${MESSAGE_QUEUE_SUFFIX}
+      RESPONSE_PROCESSING_QUEUE_ADDRESS: ${RESPONSE_PROCESSING_QUEUE_ADDRESS:-crai-mcu-response}${MESSAGE_QUEUE_SUFFIX}
+      EVENTS_TOPIC_ADDRESS: ${EVENT_TOPIC:-crai-mcu-events}${MESSAGE_QUEUE_SUFFIX}
       AZURE_STORAGE_USE_CONNECTION_STRING: ${AZURE_STORAGE_USE_CONNECTION_STRING}
       AZURE_STORAGE_CONNECTION_STRING: ${AZURE_STORAGE_CONNECTION_STRING}
       AZURE_STORAGE_ACCOUNT: ${AZURE_STORAGE_ACCOUNT}
@@ -149,12 +174,17 @@ services:
     ports:
       - "3005:3000"
       - "9234:9229"
+    volumes:
+      - ./coreai-mcu-event/app:/home/node/app
+      - ./coreai-mcu-event/test:/home/node/test
+      - ./coreai-mcu-event/scripts:/home/node/scripts
+      - ./coreai-mcu-event/package.json:/home/node/package.json
     environment:
       MESSAGE_QUEUE_HOST: ${MESSAGE_QUEUE_HOST}
       MESSAGE_QUEUE_USER: ${MESSAGE_QUEUE_USER}
       MESSAGE_QUEUE_PASSWORD: ${MESSAGE_QUEUE_PASSWORD}
-      EVENTS_TOPIC_ADDRESS: ${EVENT_TOPIC:-coreai-mcu-events}${MESSAGE_QUEUE_SUFFIX}
-      EVENTS_SUBSCRIPTION: ${EVENT_SUBSCRIPTION:-coreai-mcu-event}
+      EVENTS_TOPIC_ADDRESS: ${EVENT_TOPIC:-crai-mcu-events}${MESSAGE_QUEUE_SUFFIX}
+      EVENTS_SUBSCRIPTION: ${EVENT_SUBSCRIPTION:-crai-mcu-event}
 
   coreai-mcu-prompts:
     build:
@@ -165,6 +195,11 @@ services:
     ports:
       - "3006:3000"
       - "9235:9229"
+    volumes:
+      - ./coreai-mcu-prompts/app:/home/node/app
+      - ./coreai-mcu-prompts/test:/home/node/test
+      - ./coreai-mcu-prompts/scripts:/home/node/scripts
+      - ./coreai-mcu-prompts/package.json:/home/node/package.json
     environment:
       AZURE_STORAGE_USE_CONNECTION_STRING: ${AZURE_STORAGE_USE_CONNECTION_STRING:-true}
       AZURE_STORAGE_CONNECTION_STRING: ${AZURE_STORAGE_CONNECTION_STRING}
@@ -180,6 +215,11 @@ services:
     ports:
       - "3007:3000"
       - "9236:9229"
+    volumes:
+      - ./coreai-mcu-personas/app:/home/node/app
+      - ./coreai-mcu-personas/test:/home/node/test
+      - ./coreai-mcu-personas/scripts:/home/node/scripts
+      - ./coreai-mcu-personas/package.json:/home/node/package.json
     environment:
       AZURE_STORAGE_USE_CONNECTION_STRING: ${AZURE_STORAGE_USE_CONNECTION_STRING:-true}
       AZURE_STORAGE_CONNECTION_STRING: ${AZURE_STORAGE_CONNECTION_STRING}
