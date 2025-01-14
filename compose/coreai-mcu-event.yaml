@@ -1,0 +1,25 @@
+services:
+  coreai-mcu-event:
+    build:
+      context: ../coreai-mcu-event
+      target: development
+    image: coreai-mcu-event
+    container_name: coreai-mcu-event
+    depends_on:
+      coreai-mcu-local-setup:
+        condition: service_completed_successfully
+    ports:
+      - "3005:3000"
+      - "9234:9229"
+    networks:
+      - coreai-mcu
+    volumes:
+      - ../coreai-mcu-event/app:/home/node/app
+      - ../coreai-mcu-event/test:/home/node/test
+      - ../coreai-mcu-event/scripts:/home/node/scripts
+      - ../coreai-mcu-event/package.json:/home/node/package.json
+    env_file:
+      - ../.env
+    environment:
+      EVENTS_TOPIC_ADDRESS: coreai-mcu-events-${MESSAGE_QUEUE_SUFFIX}
+      EVENTS_SUBSCRIPTION: coreai-mcu-event

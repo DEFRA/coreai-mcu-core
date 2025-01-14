@@ -1,0 +1,24 @@
+services:
+  coreai-mcu-personas:
+    build:
+      context: ../coreai-mcu-personas
+      target: development
+    image: coreai-mcu-personas
+    container_name: coreai-mcu-personas
+    depends_on:
+      coreai-mcu-local-setup:
+        condition: service_completed_successfully
+    ports:
+      - "3007:3000"
+      - "9236:9229"
+    networks:
+      - coreai-mcu
+    volumes:
+      - ../coreai-mcu-personas/app:/home/node/app
+      - ../coreai-mcu-personas/test:/home/node/test
+      - ../coreai-mcu-personas/scripts:/home/node/scripts
+      - ../coreai-mcu-personas/package.json:/home/node/package.json
+    env_file:
+      - ../.env
+    environment:
+      INIT_STORAGE: "true"

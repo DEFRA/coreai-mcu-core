@@ -1,0 +1,26 @@
+services:
+  coreai-mcu-responses:
+    build:
+      context: ../coreai-mcu-responses
+      target: development
+    image: coreai-mcu-responses
+    container_name: coreai-mcu-responses
+    depends_on:
+      coreai-mcu-local-setup:
+        condition: service_completed_successfully
+    ports:
+      - "3004:3000"
+      - "9233:9229"
+    networks:
+      - coreai-mcu
+    volumes:
+      - ../coreai-mcu-responses/app:/home/node/app
+      - ../coreai-mcu-responses/test:/home/node/test
+      - ../coreai-mcu-responses/scripts:/home/node/scripts
+      - ../coreai-mcu-responses/package.json:/home/node/package.json
+    env_file:
+      - ../.env
+    environment:
+      RESPONSE_PROCESSING_QUEUE_ADDRESS: coreai-mcu-response-${MESSAGE_QUEUE_SUFFIX}
+      EVENTS_TOPIC_ADDRESS: coreai-mcu-events-${MESSAGE_QUEUE_SUFFIX}
+      INIT_STORAGE: "true"

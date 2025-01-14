@@ -1,0 +1,23 @@
+services:
+  coreai-mcu-local-setup:
+    build:
+      context: ../local-setup
+    image: coreai-mcu-local-setup
+    container_name: coreai-mcu-local-setup
+    depends_on:
+      coreai-mcu-postgres:
+        condition: service_healthy
+      coreai-mcu-azurite: 
+        condition: service_started
+    networks:
+      - coreai-mcu
+    env_file:
+      - ../.env
+    environment:
+      POSTGRES_HOST: ${POSTGRES_HOST:-coreai-mcu-postgres}
+      SCHEMA_NAME: ${POSTGRES_SCHEMA_NAME:-public}
+      POSTGRES_PORT: 5432
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ppp}
+      POSTGRES_USERNAME: ${POSTGRES_USERNAME:-postgres}
+    volumes:
+      - ../coreai-mcu-knowledge-pgv/changelog:/liquibase/services/coreai_mcu_knowledge_pgv/changelog

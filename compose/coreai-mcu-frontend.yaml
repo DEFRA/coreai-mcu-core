@@ -1,0 +1,33 @@
+services:
+  coreai-mcu-frontend:
+    build:
+      context: ../coreai-mcu-frontend
+      target: development
+    image: coreai-mcu-frontend
+    container_name: coreai-mcu-frontend
+    depends_on:
+      coreai-mcu-local-setup:
+        condition: service_completed_successfully
+    ports:
+      - "3000:3000"
+      - "9229:9229"
+    networks:
+      - coreai-mcu
+    volumes:
+      - ../coreai-mcu-frontend/app:/home/node/app
+      - ../coreai-mcu-frontend/test:/home/node/test
+      - ../coreai-mcu-frontend/scripts:/home/node/scripts
+      - ../coreai-mcu-frontend/package.json:/home/node/package.json
+    env_file:
+      - ../.env
+    environment:
+      AUTHENTICATION_ENABLED: false
+      GENERATION_REQUEST_TOPIC: coreai-mcu-generate-${MESSAGE_QUEUE_SUFFIX}
+      TRIAGE_REQUEST_TOPIC: coreai-mcu-triage-${MESSAGE_QUEUE_SUFFIX}
+      KNOWLEDGE_INGESTION_TOPIC: coreai-mcu-knowledge-ingest-${MESSAGE_QUEUE_SUFFIX}
+      EVENTS_TOPIC_ADDRESS: coreai-mcu-events-${MESSAGE_QUEUE_SUFFIX}
+      EVENTS_SUBSCRIPTION: coreai-mcu-frontend
+      NOTIFY_API_KEY: ${NOTIFY_API_KEY}
+      NOTIFY_TEMPLATE_ID_CORRESPONDENCE: ${NOTIFY_TEMPLATE_ID_CORRESPONDENCE}
+      CARBON_COPY_EMAIL_ADDRESS: ${CARBON_COPY_EMAIL_ADDRESS}
+      COOKIE_PASSWORD: who-likes-cookies-i-like-cookies-everybody-likes-cookies

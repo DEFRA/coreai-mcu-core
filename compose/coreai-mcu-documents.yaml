@@ -1,0 +1,24 @@
+services:
+  coreai-mcu-documents:
+    build:
+      context: ../coreai-mcu-documents
+      target: development
+    image: coreai-mcu-documents
+    container_name: coreai-mcu-documents
+    depends_on:
+      coreai-mcu-local-setup:
+        condition: service_completed_successfully
+    ports:
+      - "3001:3000"
+      - "9230:9229"
+    networks:
+      - coreai-mcu
+    volumes:
+      - ../coreai-mcu-documents/app:/home/node/app
+      - ../coreai-mcu-documents/test:/home/node/test
+      - ../coreai-mcu-documents/scripts:/home/node/scripts
+      - ../coreai-mcu-documents/package.json:/home/node/package.json
+    env_file:
+      - ../.env
+    environment:
+      INIT_STORAGE: "true"

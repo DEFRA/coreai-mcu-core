@@ -1,0 +1,33 @@
+services:
+  coreai-mcu-generation-oai:
+    build:
+      context: ../coreai-mcu-generation-oai
+      target: development
+    image: coreai-mcu-generation-oai
+    container_name: coreai-mcu-generation-oai
+    depends_on:
+      coreai-mcu-local-setup:
+        condition: service_completed_successfully
+    ports:
+      - "3002:3000"
+      - "9231:9229"
+    networks:
+      - coreai-mcu
+    volumes:
+      - ../coreai-mcu-generation-oai/app:/home/node/app
+      - ../coreai-mcu-generation-oai/test:/home/node/test
+      - ../coreai-mcu-generation-oai/scripts:/home/node/scripts
+      - ../coreai-mcu-generation-oai/package.json:/home/node/package.json
+    env_file:
+      - ../.env
+    environment:
+      GENERATION_REQUEST_OAI_SUBSCRIPTION: coreai-mcu-generation-oai
+      AZURE_OPENAI_ENABLED: ${AZURE_OPENAI_ENABLED}
+      AWS_BEDROCK_ENABLED: ${AWS_BEDROCK_ENABLED}
+      GENERATION_REQUEST_TOPIC: coreai-mcu-generate-${MESSAGE_QUEUE_SUFFIX}
+      SUMMARY_REQUEST_TOPIC: coreai-mcu-triage-${MESSAGE_QUEUE_SUFFIX}
+      RESPONSE_PROCESSING_QUEUE_ADDRESS: coreai-mcu-response-${MESSAGE_QUEUE_SUFFIX}
+      DOCUMENTS_API_BASE_URL: "http://coreai-mcu-documents:3000"
+      RESPONSES_API_BASE_URL: "http://coreai-mcu-responses:3000"
+      PROMPTS_API_BASE_URL: "http://coreai-mcu-prompts:3000"
+      PERSONAS_API_BASE_URL: "http://coreai-mcu-personas:3000"

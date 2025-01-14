@@ -1,0 +1,24 @@
+services:
+  coreai-mcu-prompts:
+    build:
+      context: ../coreai-mcu-prompts
+      target: development
+    image: coreai-mcu-prompts
+    container_name: coreai-mcu-prompts
+    depends_on:
+      coreai-mcu-local-setup:
+        condition: service_completed_successfully
+    ports:
+      - "3006:3000"
+      - "9235:9229"
+    networks:
+      - coreai-mcu
+    volumes:
+      - ../coreai-mcu-prompts/app:/home/node/app
+      - ../coreai-mcu-prompts/test:/home/node/test
+      - ../coreai-mcu-prompts/scripts:/home/node/scripts
+      - ../coreai-mcu-prompts/package.json:/home/node/package.json
+    env_file:
+      - ../.env
+    environment:
+      INIT_STORAGE: "true"

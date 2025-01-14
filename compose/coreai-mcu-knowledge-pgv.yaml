@@ -1,0 +1,26 @@
+services:
+  coreai-mcu-knowledge-pgv:
+    build:
+      context: ../coreai-mcu-knowledge-pgv
+      target: development
+    image: coreai-mcu-knowledge-pgv
+    container_name: coreai-mcu-knowledge-pgv
+    depends_on:
+      coreai-mcu-local-setup:
+        condition: service_completed_successfully
+    ports:
+      - "3003:3000"
+      - "9232:9229"
+    networks:
+      - coreai-mcu
+    volumes:
+      - ../coreai-mcu-knowledge-pgv/app:/home/node/app
+      - ../coreai-mcu-knowledge-pgv/test:/home/node/test
+      - ../coreai-mcu-knowledge-pgv/scripts:/home/node/scripts
+      - ../coreai-mcu-knowledge-pgv/package.json:/home/node/package.json
+    env_file:
+      - ../.env
+    environment:
+      KNOWLEDGE_INGESTION_PGV_SUBSCRIPTION: coreai-mcu-knowledge-pgv
+      KNOWLEDGE_INGESTION_TOPIC: coreai-mcu-knowledge-ingest-${MESSAGE_QUEUE_SUFFIX}
+      INIT_CONTAINERS: ${INIT_CONTAINERS:-true}

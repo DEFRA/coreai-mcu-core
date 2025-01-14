@@ -1,242 +1,32 @@
+include:
+  - compose/coreai-mcu-frontend.yaml
+  - compose/coreai-mcu-documents.yaml
+  - compose/coreai-mcu-generation-oai.yaml
+  - compose/coreai-mcu-knowledge-pgv.yaml
+  - compose/coreai-mcu-responses.yaml
+  - compose/coreai-mcu-event.yaml
+  - compose/coreai-mcu-prompts.yaml
+  - compose/coreai-mcu-personas.yaml
+  - compose/coreai-mcu-local-setup.yaml
 services:
-  coreai-mcu-frontend:
-    build:
-      context: ./coreai-mcu-frontend
-      target: development
-    image: coreai-mcu-frontend
-    container_name: coreai-mcu-frontend
-    ports:
-      - "3000:3000"
-      - "9229:9229"
-    volumes:
-      - ./coreai-mcu-frontend/app:/home/node/app
-      - ./coreai-mcu-frontend/test:/home/node/test
-      - ./coreai-mcu-frontend/scripts:/home/node/scripts
-      - ./coreai-mcu-frontend/package.json:/home/node/package.json
-    environment:
-      MESSAGE_QUEUE_HOST: ${MESSAGE_QUEUE_HOST}
-      MESSAGE_QUEUE_USER: ${MESSAGE_QUEUE_USER}
-      MESSAGE_QUEUE_PASSWORD: ${MESSAGE_QUEUE_PASSWORD}
-      AUTHENTICATION_ENABLED: ${AUTHENTICATION_ENABLED:-false}
-      AZUREID_CLIENT_SECRET: ${AZUREID_CLIENT_SECRET}
-      AZUREID_CLIENT_ID: ${AZUREID_CLIENT_ID}
-      AZUREID_TENANT_ID: ${AZUREID_TENANT_ID}
-      COOKIE_PASSWORD: who-likes-cookies-i-like-cookies-everybody-likes-cookies
-      GENERATION_REQUEST_TOPIC: ${GENERATION_REQUEST_TOPIC:-crai-mcu-generate}${MESSAGE_QUEUE_SUFFIX}
-      TRIAGE_REQUEST_TOPIC: ${TRIAGE_REQUEST_TOPIC:-crai-mcu-triage}${MESSAGE_QUEUE_SUFFIX}
-      KNOWLEDGE_INGESTION_TOPIC: ${KNOWLEDGE_INGESTION_TOPIC:-crai-mcu-knowledge-ingest}${MESSAGE_QUEUE_SUFFIX}
-      EVENTS_TOPIC_ADDRESS: ${EVENT_TOPIC:-crai-mcu-events}${MESSAGE_QUEUE_SUFFIX}
-      EVENTS_SUBSCRIPTION: ${EVENT_SUBSCRIPTION:-crai-mcu-frontend}
-      DOCUMENTS_API_BASE_URL: ${DOCUMENTS_API_BASE_URL:-coreai-mcu-documents}
-      KNOWLEDGE_API_BASE_URL: ${KNOWLEDGE_API_BASE_URL:-coreai-mcu-knowledge}
-      RESPONSES_API_BASE_URL: ${RESPONSES_API_BASE_URL:-coreai-mcu-responses}
-      PROMPTS_API_BASE_URL: ${PROMPTS_API_BASE_URL:-coreai-mcu-prompts}
-      PERSONAS_API_BASE_URL: ${PERSONAS_API_BASE_URL:-coreai-mcu-personas}
-      NOTIFY_API_KEY: ${NOTIFY_API_KEY}
-      NOTIFY_TEMPLATE_ID_CORRESPONDENCE: ${NOTIFY_TEMPLATE_ID_CORRESPONDENCE}
-      CARBON_COPY_EMAIL_ADDRESS: ${CARBON_COPY_EMAIL_ADDRESS}
-
-  coreai-mcu-documents:
-    build:
-      context: ./coreai-mcu-documents
-      target: development
-    image: coreai-mcu-documents
-    container_name: coreai-mcu-documents
-    ports:
-      - "3001:3000"
-      - "9230:9229"
-    volumes:
-      - ./coreai-mcu-documents/app:/home/node/app
-      - ./coreai-mcu-documents/test:/home/node/test
-      - ./coreai-mcu-documents/scripts:/home/node/scripts
-      - ./coreai-mcu-documents/package.json:/home/node/package.json
-    environment:
-      AZURE_STORAGE_USE_CONNECTION_STRING: ${AZURE_STORAGE_USE_CONNECTION_STRING:-true}
-      AZURE_STORAGE_CONNECTION_STRING: ${AZURE_STORAGE_CONNECTION_STRING}
-      AZURE_STORAGE_ACCOUNT: ${AZURE_STORAGE_ACCOUNT}
-      INIT_STORAGE: "true"
-
-  coreai-mcu-generation-oai:
-    build:
-      context: ./coreai-mcu-generation-oai
-      target: development
-    image: coreai-mcu-generation-oai
-    container_name: coreai-mcu-generation-oai
-    ports:
-      - "3002:3000"
-      - "9231:9229"
-    volumes:
-      - ./coreai-mcu-generation-oai/app:/home/node/app
-      - ./coreai-mcu-generation-oai/test:/home/node/test
-      - ./coreai-mcu-generation-oai/scripts:/home/node/scripts
-      - ./coreai-mcu-generation-oai/package.json:/home/node/package.json
-    environment:
-      POSTGRES_DB: coreai-mcu-knowledge-pgv
-      POSTGRES_HOST: ${POSTGRES_HOST:-host.docker.internal}
-      POSTGRES_PORT: 5432
-      POSTGRES_SCHEMA_NAME: ${POSTGRES_SCHEMA_NAME:-public}
-      POSTGRES_USERNAME: ${POSTGRES_SCHEMA_USERNAME:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_SCHEMA_PASSWORD:-ppp}
-      MESSAGE_QUEUE_HOST: ${MESSAGE_QUEUE_HOST}
-      MESSAGE_QUEUE_USER: ${MESSAGE_QUEUE_USER}
-      MESSAGE_QUEUE_PASSWORD: ${MESSAGE_QUEUE_PASSWORD}
-      GENERATION_REQUEST_OAI_SUBSCRIPTION: ${GENERATION_REQUEST_OAI_SUBSCRIPTION:-crai-mcu-generation-oai}
-      AZURE_OPENAI_ENABLED: ${AZURE_OPENAI_ENABLED:-true}
-      AWS_BEDROCK_ENABLED: ${AWS_BEDROCK_ENABLED:-true}
-      AWS_BEDROCK_REGION: ${AWS_BEDROCK_REGION:-test}
-      AWS_BEDROCK_ACCESS_KEY_ID: ${AWS_BEDROCK_ACCESS_KEY_ID:-test}
-      AWS_BEDROCK_SECRET_ACCESS_KEY: ${AWS_BEDROCK_SECRET_ACCESS_KEY:-test}
-      AWS_BEDROCK_MAX_TOKENS_TO_SAMPLE: ${AWS_BEDROCK_MAX_TOKENS_TO_SAMPLE:-test}
-      GENERATION_REQUEST_TOPIC: ${GENERATION_REQUEST_TOPIC:-crai-mcu-generate}${MESSAGE_QUEUE_SUFFIX}
-      SUMMARY_REQUEST_TOPIC: ${SUMMARY_REQUEST_TOPIC:-crai-mcu-triage}${MESSAGE_QUEUE_SUFFIX}
-      RESPONSE_PROCESSING_QUEUE_ADDRESS: ${RESPONSE_PROCESSING_QUEUE_ADDRESS:-crai-mcu-response}${MESSAGE_QUEUE_SUFFIX}
-      AZURE_STORAGE_USE_CONNECTION_STRING: ${AZURE_STORAGE_USE_CONNECTION_STRING}
-      AZURE_STORAGE_CONNECTION_STRING: ${AZURE_STORAGE_CONNECTION_STRING}
-      AZURE_STORAGE_ACCOUNT: ${AZURE_STORAGE_ACCOUNT}
-      AZURE_OPENAI_INSTANCE_NAME: ${AZURE_OPENAI_INSTANCE_NAME:-test}
-      AZURE_OPENAI_KEY: ${AZURE_OPENAI_KEY:-test}
-      AZURE_OPENAI_API_VERSION: ${AZURE_OPENAI_API_VERSION:-test}
-      EMBEDDING_MODEL_NAME: ${EMBEDDING_MODEL_NAME:-test}
-      GENERATION_MODEL_NAME: ${GENERATION_MODEL_NAME:-test}
-      DOCUMENTS_API_BASE_URL: ${DOCUMENTS_API_BASE_URL:-coreai-mcu-documents}
-      RESPONSES_API_BASE_URL: ${RESPONSES_API_BASE_URL:-coreai-mcu-responses}
-      PROMPTS_API_BASE_URL: ${PROMPTS_API_BASE_URL:-coreai-mcu-prompts}
-      PERSONAS_API_BASE_URL: ${PERSONAS_API_BASE_URL:-coreai-mcu-personas}
-      OLLAMA_ENABLED: ${OLLAMA_ENABLED:-true}
-      OLLAMA_BASE_URL: ${OLLAMA_BASE_URL:-http://host.docker.internal:11434}
-
-  coreai-mcu-knowledge-pgv:
-    build:
-      context: ./coreai-mcu-knowledge-pgv
-      target: development
-    image: coreai-mcu-knowledge-pgv
-    container_name: coreai-mcu-knowledge-pgv
-    ports:
-      - "3003:3000"
-      - "9232:9229"
-    volumes:
-      - ./coreai-mcu-knowledge-pgv/app:/home/node/app
-      - ./coreai-mcu-knowledge-pgv/test:/home/node/test
-      - ./coreai-mcu-knowledge-pgv/scripts:/home/node/scripts
-      - ./coreai-mcu-knowledge-pgv/package.json:/home/node/package.json
-    environment:
-      POSTGRES_DB: coreai-mcu-knowledge-pgv
-      POSTGRES_HOST: ${POSTGRES_HOST:-coreai-mcu-postgres}
-      POSTGRES_PORT: 5432
-      POSTGRES_SCHEMA_NAME: ${POSTGRES_SCHEMA_NAME:-public}
-      POSTGRES_USERNAME: ${POSTGRES_SCHEMA_USERNAME:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_SCHEMA_PASSWORD:-ppp}
-      MESSAGE_QUEUE_HOST: ${MESSAGE_QUEUE_HOST}
-      MESSAGE_QUEUE_USER: ${MESSAGE_QUEUE_USER}
-      MESSAGE_QUEUE_PASSWORD: ${MESSAGE_QUEUE_PASSWORD}
-      KNOWLEDGE_INGESTION_PGV_SUBSCRIPTION: ${KNOWLEDGE_INGESTION_PGV_SUBSCRIPTION:-crai-mcu-knowledge-pgv}
-      KNOWLEDGE_INGESTION_TOPIC: ${KNOWLEDGE_INGESTION_TOPIC:-crai-mcu-knowledge-ingest}${MESSAGE_QUEUE_SUFFIX}
-      AZURE_STORAGE_USE_CONNECTION_STRING: ${AZURE_STORAGE_USE_CONNECTION_STRING}
-      AZURE_STORAGE_CONNECTION_STRING: ${AZURE_STORAGE_CONNECTION_STRING}
-      AZURE_STORAGE_ACCOUNT: ${AZURE_STORAGE_ACCOUNT}
-      AZURE_OPENAI_INSTANCE_NAME: ${AZURE_OPENAI_INSTANCE_NAME:-test}
-      AZURE_OPENAI_KEY: ${AZURE_OPENAI_KEY:-test}
-      AZURE_OPENAI_API_VERSION: ${AZURE_OPENAI_API_VERSION:-test}
-      EMBEDDING_MODEL_NAME: ${EMBEDDING_MODEL_NAME:-test}
-      INIT_CONTAINERS: ${INIT_CONTAINERS:-true}
-
-  coreai-mcu-responses:
-    build:
-      context: ./coreai-mcu-responses
-      target: development
-    image: coreai-mcu-responses
-    container_name: coreai-mcu-responses
-    ports:
-      - "3004:3000"
-      - "9233:9229"
-    volumes:
-      - ./coreai-mcu-responses/app:/home/node/app
-      - ./coreai-mcu-responses/test:/home/node/test
-      - ./coreai-mcu-responses/scripts:/home/node/scripts
-      - ./coreai-mcu-responses/package.json:/home/node/package.json
-    environment:
-      MESSAGE_QUEUE_HOST: ${MESSAGE_QUEUE_HOST}
-      MESSAGE_QUEUE_USER: ${MESSAGE_QUEUE_USER}
-      MESSAGE_QUEUE_PASSWORD: ${MESSAGE_QUEUE_PASSWORD}
-      RESPONSE_PROCESSING_QUEUE_ADDRESS: ${RESPONSE_PROCESSING_QUEUE_ADDRESS:-crai-mcu-response}${MESSAGE_QUEUE_SUFFIX}
-      EVENTS_TOPIC_ADDRESS: ${EVENT_TOPIC:-crai-mcu-events}${MESSAGE_QUEUE_SUFFIX}
-      AZURE_STORAGE_USE_CONNECTION_STRING: ${AZURE_STORAGE_USE_CONNECTION_STRING}
-      AZURE_STORAGE_CONNECTION_STRING: ${AZURE_STORAGE_CONNECTION_STRING}
-      AZURE_STORAGE_ACCOUNT: ${AZURE_STORAGE_ACCOUNT}
-      INIT_STORAGE: "true"
-
-  coreai-mcu-event:
-    build:
-      context: ./coreai-mcu-event
-      target: development
-    image: coreai-mcu-event
-    container_name: coreai-mcu-event
-    ports:
-      - "3005:3000"
-      - "9234:9229"
-    volumes:
-      - ./coreai-mcu-event/app:/home/node/app
-      - ./coreai-mcu-event/test:/home/node/test
-      - ./coreai-mcu-event/scripts:/home/node/scripts
-      - ./coreai-mcu-event/package.json:/home/node/package.json
-    environment:
-      MESSAGE_QUEUE_HOST: ${MESSAGE_QUEUE_HOST}
-      MESSAGE_QUEUE_USER: ${MESSAGE_QUEUE_USER}
-      MESSAGE_QUEUE_PASSWORD: ${MESSAGE_QUEUE_PASSWORD}
-      EVENTS_TOPIC_ADDRESS: ${EVENT_TOPIC:-crai-mcu-events}${MESSAGE_QUEUE_SUFFIX}
-      EVENTS_SUBSCRIPTION: ${EVENT_SUBSCRIPTION:-crai-mcu-event}
-
-  coreai-mcu-prompts:
-    build:
-      context: ./coreai-mcu-prompts
-      target: development
-    image: coreai-mcu-prompts
-    container_name: coreai-mcu-prompts
-    ports:
-      - "3006:3000"
-      - "9235:9229"
-    volumes:
-      - ./coreai-mcu-prompts/app:/home/node/app
-      - ./coreai-mcu-prompts/test:/home/node/test
-      - ./coreai-mcu-prompts/scripts:/home/node/scripts
-      - ./coreai-mcu-prompts/package.json:/home/node/package.json
-    environment:
-      AZURE_STORAGE_USE_CONNECTION_STRING: ${AZURE_STORAGE_USE_CONNECTION_STRING:-true}
-      AZURE_STORAGE_CONNECTION_STRING: ${AZURE_STORAGE_CONNECTION_STRING}
-      AZURE_STORAGE_ACCOUNT: ${AZURE_STORAGE_ACCOUNT}
-      INIT_STORAGE: "true"
-
-  coreai-mcu-personas:
-    build:
-      context: ./coreai-mcu-personas
-      target: development
-    image: coreai-mcu-personas
-    container_name: coreai-mcu-personas
-    ports:
-      - "3007:3000"
-      - "9236:9229"
-    volumes:
-      - ./coreai-mcu-personas/app:/home/node/app
-      - ./coreai-mcu-personas/test:/home/node/test
-      - ./coreai-mcu-personas/scripts:/home/node/scripts
-      - ./coreai-mcu-personas/package.json:/home/node/package.json
-    environment:
-      AZURE_STORAGE_USE_CONNECTION_STRING: ${AZURE_STORAGE_USE_CONNECTION_STRING:-true}
-      AZURE_STORAGE_CONNECTION_STRING: ${AZURE_STORAGE_CONNECTION_STRING}
-      AZURE_STORAGE_ACCOUNT: ${AZURE_STORAGE_ACCOUNT}
-      INIT_STORAGE: "true"
-
   coreai-mcu-postgres:
     build:
       context: .
-      dockerfile: ./coreai-mcu-knowledge-pgv/postgres/Dockerfile
-    image: coreai-mcu-knowledge-pgv-postgres
+      dockerfile: ./pgvector.Dockerfile
+    image: coreai-mcu-pg
     environment:
-      POSTGRES_DB: coreai-mcu-knowledge
+      POSTGRES_DB: postgres
       POSTGRES_PASSWORD: ppp
       POSTGRES_USERNAME: postgres
     ports:
       - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USERNAME:-postgres} -d postgres"]
+      interval: 5s
+      retries: 10
+      timeout: 5s
+    networks:
+      - coreai-mcu
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
@@ -245,7 +35,8 @@ services:
     ports:
       - "10000:10000"
       - "10002:10002"
-    command: azurite --blobHost 0.0.0.0 --tableHost 0.0.0.0 --skipApiVersionCheck
+    networks:
+      - coreai-mcu
     volumes:
       - azurite_data:/data
 
@@ -261,6 +52,11 @@ services:
       NEXTAUTH_URL: http://localhost:4000
       NEXTAUTH_SECRET: ${NEXTAUTH_SECRET}
       SALT: ${LANGFUSE_SALT}
+
+networks:
+  coreai-mcu:
+    name: coreai-mcu
+    driver: bridge
 
 volumes:
   azurite_data:
